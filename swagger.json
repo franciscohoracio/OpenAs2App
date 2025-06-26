@@ -1,0 +1,534 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OpenAS2 REST API",
+    "version": "1.0.0",
+    "description": "REST API for managing partners, partnerships, certificates and messages"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Get server version",
+        "responses": {
+          "200": {
+            "description": "Version string"
+          }
+        }
+      }
+    },
+    "/cert/list": {
+      "get": {
+        "summary": "List certificates",
+        "responses": {
+          "200": {
+            "description": "List of aliases"
+          }
+        }
+      }
+    },
+    "/cert/view/{alias}": {
+      "get": {
+        "summary": "View certificate",
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certificate details"
+          }
+        }
+      }
+    },
+    "/cert/import": {
+      "post": {
+        "summary": "Import certificate from file",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "alias"
+                  },
+                  "1": {
+                    "type": "string",
+                    "description": "filename"
+                  },
+                  "2": {
+                    "type": "string",
+                    "description": "password",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "0",
+                  "1"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Import result"
+          }
+        }
+      }
+    },
+    "/cert/importbystream": {
+      "post": {
+        "summary": "Import certificate from encoded data",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "alias"
+                  },
+                  "1": {
+                    "type": "string",
+                    "description": "base64 encoded certificate"
+                  }
+                },
+                "required": [
+                  "0",
+                  "1"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Import result"
+          }
+        }
+      }
+    },
+    "/cert/delete": {
+      "post": {
+        "summary": "Delete certificate",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "alias"
+                  }
+                },
+                "required": [
+                  "0"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete result"
+          }
+        }
+      }
+    },
+    "/cert/clear": {
+      "post": {
+        "summary": "Remove all certificates",
+        "responses": {
+          "200": {
+            "description": "Clear result"
+          }
+        }
+      }
+    },
+    "/partner/list": {
+      "get": {
+        "summary": "List partners",
+        "responses": {
+          "200": {
+            "description": "List of partners"
+          }
+        }
+      }
+    },
+    "/partner/view/{name}": {
+      "get": {
+        "summary": "View partner",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Partner details"
+          }
+        }
+      }
+    },
+    "/partner/add": {
+      "post": {
+        "summary": "Add partner",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "name"
+                  },
+                  "as2_id": {
+                    "type": "string",
+                    "description": "AS2 identifier"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "contact email"
+                  },
+                  "x509_alias": {
+                    "type": "string",
+                    "description": "certificate alias"
+                  }
+                },
+                "required": [
+                  "0"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add result"
+          }
+        }
+      }
+    },
+    "/partner/delete": {
+      "post": {
+        "summary": "Delete partner",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "name"
+                  }
+                },
+                "required": [
+                  "0"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete result"
+          }
+        }
+      }
+    },
+    "/partner/filter": {
+      "get": {
+        "summary": "Find partner by certificate alias",
+        "parameters": [
+          {
+            "name": "x509_alias",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Partner info"
+          }
+        }
+      }
+    },
+    "/partnership/list": {
+      "get": {
+        "summary": "List partnerships",
+        "responses": {
+          "200": {
+            "description": "List of partnerships"
+          }
+        }
+      }
+    },
+    "/partnership/view/{name}": {
+      "get": {
+        "summary": "View partnership",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Partnership details"
+          }
+        }
+      }
+    },
+    "/partnership/add": {
+      "post": {
+        "summary": "Add partnership",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "name"
+                  },
+                  "1": {
+                    "type": "string",
+                    "description": "sender"
+                  },
+                  "2": {
+                    "type": "string",
+                    "description": "receiver"
+                  },
+                  "as2_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL to send AS2 messages"
+                  },
+                  "subject": {
+                    "type": "string",
+                    "description": "message subject"
+                  },
+                  "as2_mdn_to": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "MDN to address"
+                  },
+                  "as2_mdn_options": {
+                    "type": "string",
+                    "description": "MDN options"
+                  },
+                  "as2_receipt_option": {
+                    "type": "string",
+                    "description": "async MDN URL",
+                    "nullable": true
+                  },
+                  "encrypt": {
+                    "type": "string",
+                    "description": "encryption algorithm"
+                  },
+                  "sign": {
+                    "type": "string",
+                    "description": "signature algorithm"
+                  },
+                  "resend_max_retries": {
+                    "type": "integer",
+                    "description": "max resend attempts"
+                  },
+                  "prevent_canonicalization_for_mic": {
+                    "type": "boolean"
+                  },
+                  "rename_digest_to_old_name": {
+                    "type": "boolean"
+                  },
+                  "remove_cms_algorithm_protection_attrib": {
+                    "type": "boolean"
+                  },
+                  "content_transfer_encoding": {
+                    "type": "string"
+                  },
+                  "compression_type": {
+                    "type": "string"
+                  },
+                  "protocol": {
+                    "type": "string"
+                  },
+                  "pollerConfig.enabled": {
+                    "type": "boolean",
+                    "description": "enable directory poller"
+                  },
+                  "pollerConfig.filename": {
+                    "type": "string",
+                    "description": "poller directory path",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "0",
+                  "1",
+                  "2"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add result"
+          }
+        }
+      }
+    },
+    "/partnership/delete": {
+      "post": {
+        "summary": "Delete partnership",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "0": {
+                    "type": "string",
+                    "description": "name"
+                  }
+                },
+                "required": [
+                  "0"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete result"
+          }
+        }
+      }
+    },
+    "/partnership/store": {
+      "post": {
+        "summary": "Store partnerships to disk",
+        "responses": {
+          "200": {
+            "description": "Store result"
+          }
+        }
+      }
+    },
+    "/partnership/refresh": {
+      "post": {
+        "summary": "Reload partnerships from disk",
+        "responses": {
+          "200": {
+            "description": "Refresh result"
+          }
+        }
+      }
+    },
+    "/messages/list": {
+      "get": {
+        "summary": "List tracked messages",
+        "responses": {
+          "200": {
+            "description": "List of messages"
+          }
+        }
+      }
+    },
+    "/messages/view/{id}": {
+      "get": {
+        "summary": "View message details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message information"
+          }
+        }
+      }
+    },
+    "/messages/data_charts": {
+      "get": {
+        "summary": "Message stats for charts",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chart data"
+          }
+        }
+      }
+    }
+  }
+}
