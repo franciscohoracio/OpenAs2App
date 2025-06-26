@@ -75,15 +75,15 @@
                 "properties": {
                   "0": {
                     "type": "string",
-                    "description": "alias"
+                    "description": "certificate alias"
                   },
                   "1": {
                     "type": "string",
-                    "description": "filename"
+                    "description": "certificate file path"
                   },
                   "2": {
                     "type": "string",
-                    "description": "password",
+                    "description": "keystore password",
                     "nullable": true
                   }
                 },
@@ -113,7 +113,7 @@
                 "properties": {
                   "0": {
                     "type": "string",
-                    "description": "alias"
+                    "description": "certificate alias"
                   },
                   "1": {
                     "type": "string",
@@ -146,7 +146,7 @@
                 "properties": {
                   "0": {
                     "type": "string",
-                    "description": "alias"
+                    "description": "certificate alias"
                   }
                 },
                 "required": [
@@ -214,7 +214,7 @@
                 "properties": {
                   "0": {
                     "type": "string",
-                    "description": "name"
+                    "description": "partner name"
                   },
                   "as2_id": {
                     "type": "string",
@@ -223,11 +223,11 @@
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "contact email"
+                    "description": "contact email address"
                   },
                   "x509_alias": {
                     "type": "string",
-                    "description": "certificate alias"
+                    "description": "certificate alias used for signing/encryption"
                   }
                 },
                 "required": [
@@ -255,7 +255,7 @@
                 "properties": {
                   "0": {
                     "type": "string",
-                    "description": "name"
+                    "description": "partner name"
                   }
                 },
                 "required": [
@@ -282,7 +282,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "certificate alias to filter by"
           }
         ],
         "responses": {
@@ -333,20 +334,20 @@
                 "properties": {
                   "0": {
                     "type": "string",
-                    "description": "name"
+                    "description": "partnership name"
                   },
                   "1": {
                     "type": "string",
-                    "description": "sender"
+                    "description": "sender partner name"
                   },
                   "2": {
                     "type": "string",
-                    "description": "receiver"
+                    "description": "receiver partner name"
                   },
                   "as2_url": {
                     "type": "string",
                     "format": "uri",
-                    "description": "URL to send AS2 messages"
+                    "description": "destination URL for AS2 messages"
                   },
                   "subject": {
                     "type": "string",
@@ -355,15 +356,15 @@
                   "as2_mdn_to": {
                     "type": "string",
                     "format": "email",
-                    "description": "MDN to address"
+                    "description": "address for returned MDN"
                   },
                   "as2_mdn_options": {
                     "type": "string",
-                    "description": "MDN options"
+                    "description": "requested MDN options"
                   },
                   "as2_receipt_option": {
                     "type": "string",
-                    "description": "async MDN URL",
+                    "description": "URL for asynchronous MDN",
                     "nullable": true
                   },
                   "encrypt": {
@@ -379,22 +380,28 @@
                     "description": "max resend attempts"
                   },
                   "prevent_canonicalization_for_mic": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "disable canonicalization when calculating the MIC"
                   },
                   "rename_digest_to_old_name": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "use legacy digest algorithm name"
                   },
                   "remove_cms_algorithm_protection_attrib": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "omit CMS algorithm protection attribute"
                   },
                   "content_transfer_encoding": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Content-Transfer-Encoding header"
                   },
                   "compression_type": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "compression algorithm"
                   },
                   "protocol": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "storage module protocol"
                   },
                   "pollerConfig.enabled": {
                     "type": "boolean",
@@ -402,7 +409,7 @@
                   },
                   "pollerConfig.filename": {
                     "type": "string",
-                    "description": "poller directory path",
+                    "description": "directory path polled for outgoing files",
                     "nullable": true
                   }
                 },
@@ -511,7 +518,8 @@
             "schema": {
               "type": "string",
               "format": "date"
-            }
+            },
+            "description": "chart range start date"
           },
           {
             "name": "endDate",
@@ -520,7 +528,8 @@
             "schema": {
               "type": "string",
               "format": "date"
-            }
+            },
+            "description": "chart range end date"
           }
         ],
         "responses": {
